@@ -1,8 +1,11 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { GiAlienBug } from "react-icons/gi";
 
 const Navbar: React.FC = () => {
+  const currentpath = usePathname();
   const links = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Issues", href: "/issues" },
@@ -15,15 +18,15 @@ const Navbar: React.FC = () => {
       <ul className="flex space-x-6">
         {links.map((link) => (
           <Link key={link.href} href={link.href}>
-            <li>{link.label}</li>
+            <li
+              className={`${
+                link.href === currentpath ? "text-emerald-400" : "text-zinc-200"
+              }`}
+            >
+              {link.label}
+            </li>
           </Link>
         ))}
-        {/* <li>
-          <Link href={`#`}>Dashboard</Link>
-        </li>
-        <li>
-          <Link href={`#`}>Issue</Link>
-        </li> */}
       </ul>
     </nav>
   );
