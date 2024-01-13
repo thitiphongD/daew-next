@@ -1,9 +1,24 @@
 "use client";
 import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-const NewIssuePage = () => {
+interface IssueForm {
+  title: string;
+  des: string;
+}
+const NewIssuePage: React.FC = () => {
+  const { register, control, handleSubmit } = useForm<IssueForm>();
+  const router = useRouter();
   return (
-    <form className="max-w-md mx-auto">
+    <form
+      className="max-w-md mx-auto"
+      onSubmit={handleSubmit(async (data) => {
+        await axios.post("/api/issues", data);
+        router.push("/issues");
+      })}
+    >
       <div className="mb-4">
         <label className="block text-sm font-semibold text-zinc-400 mb-1">
           Title
@@ -11,19 +26,21 @@ const NewIssuePage = () => {
         <input
           type="text"
           placeholder="Title"
-          className="p-2 w-full text-sm bg-zinc-800 placeholder-zinc-400 border-zinc-600 rounded-md font-semibold"
+          className="p-2 w-full text-sm text-zinc-400 bg-zinc-800 placeholder-zinc-400 border-zinc-600 rounded-md font-semibold"
+          {...register("title")}
         />
       </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-semibold text-zinc-400 mb-1">
-          Description
-        </label>
-        <textarea
-          className="p-2 w-full text-sm bg-zinc-800 placeholder-zinc-400 border-zinc-600 rounded-md font-semibold h-20"
-          placeholder="Description here..."
-        ></textarea>
-      </div>
+      <Controller
+        name="des"
+        control={control}
+        render={({ field }) => (
+          <textarea
+            className="p-2 w-full text-sm text-zinc-400 bg-zinc-800 placeholder-zinc-400 border-zinc-600 rounded-md font-semibold h-20"
+            placeholder="Description here..."
+            {...field}
+          ></textarea>
+        )}
+      />
 
       <button
         type="submit"
