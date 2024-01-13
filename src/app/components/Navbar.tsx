@@ -1,0 +1,32 @@
+import Link from "next/link";
+import React from "react";
+import { GiAlienBug } from "react-icons/gi";
+
+const Navbar: React.FC = () => {
+  const links = [
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "Issues", href: "/issues" },
+  ];
+  return (
+    <nav className="flex items-center space-x-6 border-b-2 border-zinc-700 mb-5 h-14 px-5 ">
+      <Link href={`/`} className="text-emerald-400">
+        <GiAlienBug className="text-2xl" />
+      </Link>
+      <ul className="flex space-x-6">
+        {links.map((link) => (
+          <Link key={link.href} href={link.href}>
+            <li>{link.label}</li>
+          </Link>
+        ))}
+        {/* <li>
+          <Link href={`#`}>Dashboard</Link>
+        </li>
+        <li>
+          <Link href={`#`}>Issue</Link>
+        </li> */}
+      </ul>
+    </nav>
+  );
+};
+
+export default Navbar;
