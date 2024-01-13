@@ -14,21 +14,21 @@ const NewIssuePage: React.FC = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const { register, control, handleSubmit } = useForm<IssueForm>();
   const router = useRouter();
+
+  const handleSubmitNewIssue = handleSubmit(async (data) => {
+    try {
+      setIsSubmit(true);
+      await axios.post("/api/issues", data);
+      router.push("/issues");
+    } catch (error: any) {
+      setIsSubmit(false);
+      console.log(error);
+    }
+  });
+
   return (
     <div>
-      <form
-        className="max-w-md mx-auto"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            setIsSubmit(true);
-            await axios.post("/api/issues", data);
-            router.push("/issues");
-          } catch (error: any) {
-            setIsSubmit(false);
-            console.log(error);
-          }
-        })}
-      >
+      <form className="max-w-md mx-auto" onSubmit={handleSubmitNewIssue}>
         <div className="mb-4">
           <label className="block text-sm font-semibold text-zinc-400 mb-1">
             Title
